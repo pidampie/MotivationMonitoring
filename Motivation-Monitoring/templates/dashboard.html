@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* RESET & GLOBAL STYLES */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: #f8fafc; /* Abu-abu ultra terang khas Ruangguru */
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      /* APPLICATION LAYOUT MAP */
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR REFINEMENT (ELEGANT DARK BLUE) */
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a; /* Slate dark modern */
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+
+      .menu-item.active {
+        background-color: #1d4ed8; /* Biru Utama Ruangguru */
+        color: white;
+        font-weight: 600;
+      }
+
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        background-color: #ef4444;
+        border-radius: 50%;
+        margin-left: auto;
+      }
+
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* MAIN CONTENT AREA LAYOUT */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1300px;
+      }
+
+      /* TOPBAR / HEADER STYLES */
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background-color: white;
+        padding: 6px 14px 6px 6px;
+        border-radius: 30px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        background-color: #e0f2fe;
+        color: #0369a1;
+        font-weight: 700;
+        font-size: 12px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .user-info .user-name {
+        font-weight: 600;
+        font-size: 13px;
+        display: block;
+      }
+
+      .user-info .user-role {
+        font-size: 11px;
+        color: #64748b;
+        display: block;
+      }
+
+      /* SYSTEM ALERTS COMPONENTS */
+      .alert {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        font-size: 13px;
+      }
+
+      .alert-danger {
+        background-color: #fef2f2;
+        border: 1px solid #fca5a5;
+        color: #991b1b;
+      }
+
+      .alert-success {
+        background-color: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+      }
+
+      /* COMPACT METRICS GRID DESIGN */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .metric-card {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .metric-card.status-high {
+        border-left: 4px solid #10b981;
+      }
+      .metric-card.status-medium {
+        border-left: 4px solid #f59e0b;
+      }
+      .metric-card.status-low {
+        border-left: 4px solid #ef4444;
+      }
+
+      .metric-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .metric-body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .metric-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+        margin-top: 2px;
+      }
+
+      /* TINT COLOR UTILITIES */
+      .bg-blue-light {
+        background-color: #eff6ff;
+      }
+      .text-blue {
+        color: #3b82f6;
+      }
+      .bg-purple-light {
+        background-color: #faf5ff;
+      }
+      .text-purple {
+        color: #a855f7;
+      }
+      .bg-success-light {
+        background-color: #f0fdf4;
+      }
+      .text-success {
+        color: #10b981;
+      }
+      .bg-warning-light {
+        background-color: #fffbeb;
+      }
+      .text-warning {
+        color: #f59e0b;
+      }
+      .bg-danger-light {
+        background-color: #fef2f2;
+      }
+      .text-danger {
+        color: #ef4444;
+      }
+      .bg-info-light {
+        background-color: #f0f9ff;
+      }
+      .text-info {
+        color: #06b6d4;
+      }
+
+      /* REFINED PANEL/CARD ARCHITECTURE */
+      .content-split {
+        display: grid;
+        grid-template-columns: 7fr 3fr;
+        gap: 24px;
+      }
+
+      .panel {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .panel-header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .panel-body {
+        padding: 20px;
+      }
+
+      .p-0 {
+        padding: 0 !important;
+      }
+
+      /* SPECIALIST PANELS */
+      .panel-insight {
+        background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+        border: 1px solid #bae6fd;
+      }
+
+      .insight-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #0284c7;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .insight-text {
+        font-size: 13.5px;
+        color: #0369a1;
+        line-height: 1.6;
+      }
+
+      /* SLIM HORIZONTAL BAR CHART DESIGN */
+      .chart-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 10px 0;
+      }
+
+      .chart-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .bar-label {
+        width: 70px;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .bar-track {
+        flex: 1;
+        height: 24px;
+        background-color: #f1f5f9;
+        border-radius: 6px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 12px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 30px;
+      }
+
+      .bar-popover {
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .bg-success {
+        background-color: #10b981;
+      }
+      .bg-warning {
+        background-color: #f59e0b;
+      }
+      .bg-danger {
+        background-color: #ef4444;
+      }
+
+      /* DATA TABLES COMPONENT GRID */
+      .table-clean {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .table-clean th {
+        background-color: #f8fafc;
+        padding: 12px 20px;
+        font-weight: 600;
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .table-clean td {
+        padding: 14px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+      }
+
+      .student-name {
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .score-pill {
+        background-color: #f1f5f9;
+        color: #334155;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 12px;
+      }
+
+      .text-center {
+        text-align: center !important;
+      }
+
+      .status-indicator {
+        font-size: 12px;
+        color: #64748b;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .dot-success {
+        width: 8px;
+        height: 8px;
+        background-color: #10b981;
+        border-radius: 50%;
+      }
+
+      .table-empty {
+        padding: 32px;
+        text-align: center;
+        color: #94a3b8;
+      }
+
+      /* FLAT ACTION BUTTONS (SHORTCUTS) */
+      .shortcut-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn-shortcut {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+        transition:
+          transform 0.2s,
+          opacity 0.2s;
+      }
+
+      .btn-shortcut:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-sc-primary {
+        background-color: #ffc107; /* Oranye/Kuning Aksen Khas Ruangguru */
+        color: #0f172a;
+      }
+
+      .btn-sc-secondary {
+        background-color: #f1f5f9;
+        color: #334155;
+        border: 1px solid #e2e8f0;
+      }
+
+      .btn-sc-secondary:hover {
+        background-color: #e2e8f0;
+      }
+
+      /* TOP PERFORMERS RANKING STRUCTURE */
+      .ranking-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .ranking-row {
+        display: flex;
+        align-items: center;
+        padding: 14px 20px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .ranking-row:last-child {
+        border-bottom: none;
+      }
+
+      .rank-badge {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        margin-right: 14px;
+      }
+
+      .rank-1 {
+        background-color: #fef3c7;
+        color: #d97706;
+        border: 1px solid #fcd34d;
+      }
+      .rank-2 {
+        background-color: #f1f5f9;
+        color: #475569;
+      }
+      .rank-3 {
+        background-color: #ffedd5;
+        color: #c2410c;
+      }
+
+      .rank-user {
+        flex: 1;
+      }
+
+      .rank-user h4 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .rank-user p {
+        font-size: 11px;
+        color: #94a3b8;
+      }
+
+      .rank-score {
+        font-weight: 700;
+        color: #0f172a;
+        background-color: #f8fafc;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid #e2e8f0;
+      }
+
+      /* RESPONSIVE LAYOUT BREAKPOINTS */
+      @media (max-width: 1024px) {
+        .metrics-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .content-split {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Motivation Monitoring</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item active"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi {% if rendah > 0
+            %}<span class="badge-dot"></span>{% endif %}</a
+          >
+          <a href="/rekomendasi" class="menu-item"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item">
+            <i class="fa-solid fa-user-gear"></i> Profil Saya
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Dashboard Ringkasan</h1>
+            <p class="subtitle">
+              Sistem Pemantauan Motivasi Belajar Siswa Berbasis Lokal
+            </p>
+          </div>
+          <div class="topbar-right">
+            <div class="user-profile">
+              <div class="avatar">BK</div>
+              <div class="user-info">
+                <span class="user-name">Guru BK</span>
+                <span class="user-role">Administrator</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {% if rendah > 0 %}
+        <div class="alert alert-danger">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span
+            >Sistem mendeteksi <strong>{{ rendah }} siswa</strong> dengan
+            motivasi belajar rendah. Segera periksa menu rekomendasi
+            tindakan.</span
+          >
+        </div>
+        {% else %}
+        <div class="alert alert-success">
+          <i class="fa-solid fa-circle-check"></i>
+          <span
+            >Seluruh kondisi psikologis dan motivasi belajar peserta didik
+            terpantau stabil dan kondusif.</span
+          >
+        </div>
+        {% endif %}
+
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon text-blue bg-blue-light">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Total Siswa</span>
+              <span class="metric-value">{{ total_siswa }}</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon text-purple bg-purple-light">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Log Aktivitas</span>
+              <span class="metric-value">{{ total_aktivitas }}</span>
+            </div>
+          </div>
+          <div class="metric-card status-high">
+            <div class="metric-icon text-success bg-success-light">
+              <i class="fa-solid fa-face-smile"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Motivasi Tinggi</span>
+              <span class="metric-value text-success">{{ tinggi }}</span>
+            </div>
+          </div>
+          <div class="metric-card status-medium">
+            <div class="metric-icon text-warning bg-warning-light">
+              <i class="fa-solid fa-face-meh"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Motivasi Sedang</span>
+              <span class="metric-value text-warning">{{ sedang }}</span>
+            </div>
+          </div>
+          <div class="metric-card status-low">
+            <div class="metric-icon text-danger bg-danger-light">
+              <i class="fa-solid fa-face-frown"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Motivasi Rendah</span>
+              <span class="metric-value text-danger">{{ rendah }}</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon text-info bg-info-light">
+              <i class="fa-solid fa-star-half-stroke"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Rerata Skor</span>
+              <span class="metric-value">{{ avg }}</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="content-split">
+          <div class="col-main">
+            <div class="panel panel-insight">
+              <div class="panel-body">
+                <div class="insight-badge">
+                  <i class="fa-solid fa-circle-nodes"></i> Insight Terkini
+                </div>
+                <p class="insight-text">
+                  {% if tinggi >= sedang and tinggi >= rendah %} Mayoritas siswa
+                  atau tingkat motivasi <strong>Tinggi</strong>. Disarankan
+                  untuk memberikan apresiasi berkala agar performa belajar di
+                  kelas tetap konsisten. {% elif sedang >= tinggi and sedang >=
+                  rendah %} Sebagian besar siswa berada pada tingkat motivasi
+                  <strong>Sedang</strong>. Perlu adanya variasi interaksi
+                  pengajaran agar motivasi internal tidak menurun. {% else %}
+                  Perhatian penuh dibutuhkan! Jumlah siswa dengan motivasi
+                  <strong>Rendah</strong> cukup mendominasi. Segera jadwalkan
+                  sesi bimbingan tatap muka (konseling). {% endif %}
+                </p>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>
+                  <i class="fa-solid fa-chart-simple"></i> Distribusi Komponen
+                  Motivasi
+                </h3>
+              </div>
+              <div class="panel-body">
+                <div class="chart-wrapper">
+                  <div class="chart-item">
+                    <div class="bar-label">Tinggi</div>
+                    <div class="bar-track">
+                      <div
+                        class="bar-fill bg-success"
+                        style="width: {% if total_siswa > 0 %}{{ (tinggi / total_siswa) * 100 }}{% else %}0{% endif %}%"
+                      >
+                        <span class="bar-popover">{{ tinggi }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="chart-item">
+                    <div class="bar-label">Sedang</div>
+                    <div class="bar-track">
+                      <div
+                        class="bar-fill bg-warning"
+                        style="width: {% if total_siswa > 0 %}{{ (sedang / total_siswa) * 100 }}{% else %}0{% endif %}%"
+                      >
+                        <span class="bar-popover">{{ sedang }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="chart-item">
+                    <div class="bar-label">Rendah</div>
+                    <div class="bar-track">
+                      <div
+                        class="bar-fill bg-danger"
+                        style="width: {% if total_siswa > 0 %}{{ (rendah / total_siswa) * 100 }}{% else %}0{% endif %}%"
+                      >
+                        <span class="bar-popover">{{ rendah }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>
+                  <i class="fa-solid fa-clock-rotate-left"></i> Pembaruan
+                  Aktivitas Terbaru
+                </h3>
+              </div>
+              <div class="panel-body p-0">
+                <table class="table-clean">
+                  <thead>
+                    <tr>
+                      <th>Nama Siswa</th>
+                      <th class="text-center">Skor Evaluasi</th>
+                      <th>Status Asesmen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for r in recent %}
+                    <tr>
+                      <td><span class="student-name">{{ r.nama }}</span></td>
+                      <td class="text-center">
+                        <span class="score-pill">{{ r.skor }}</span>
+                      </td>
+                      <td>
+                        <span class="status-indicator"
+                          ><span class="dot-success"></span> Terverifikasi</span
+                        >
+                      </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                      <td colspan="3" class="table-empty">
+                        Belum ada data aktivitas terinput hari ini.
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-side">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>
+                  <i class="fa-solid fa-circle-play"></i> Akses Cepat Menu
+                </h3>
+              </div>
+              <div class="panel-body">
+                <div class="shortcut-list">
+                  <a
+                    href="/asesmen_kompleks"
+                    class="btn-shortcut btn-sc-primary"
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Input Asesmen Baru</span>
+                  </a>
+                  <a href="/laporan" class="btn-shortcut btn-sc-secondary">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Unduh Dokumen Laporan</span>
+                  </a>
+                  <a href="/rekomendasi" class="btn-shortcut btn-sc-secondary">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>Lihat Tindakan BK</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>
+                  <i class="fa-solid fa-award text-warning"></i> Partisipasi
+                  Tertinggi
+                </h3>
+              </div>
+              <div class="panel-body p-0">
+                <div class="ranking-container">
+                  {% for d in top %}
+                  <div class="ranking-row">
+                    <div class="rank-badge rank-{{ loop.index }}">
+                      {{ loop.index }}
+                    </div>
+                    <div class="rank-user">
+                      <h4>{{ d.nama }}</h4>
+                      <p>Akumulasi Indikator Kinerja</p>
+                    </div>
+                    <div class="rank-score">{{ d.skor }}</div>
+                  </div>
+                  {% else %}
+                  <div class="table-empty">
+                    Belum ada pemeringkatan berkala.
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

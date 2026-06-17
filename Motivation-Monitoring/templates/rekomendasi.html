@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rekomendasi Tindak Lanjut - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* RESET & GLOBAL STYLES */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR NAVIGATION */
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+      .menu-item.active {
+        background-color: #1d4ed8;
+        color: white;
+        font-weight: 600;
+      }
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* MAIN CONTENT AREA LAYOUT */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1300px;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* COMPACT METRICS GRID DESIGN */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .metric-card {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .metric-card.status-danger {
+        border-left: 4px solid #ef4444;
+      }
+      .metric-card.status-warning {
+        border-left: 4px solid #f59e0b;
+      }
+      .metric-card.status-success {
+        border-left: 4px solid #10b981;
+      }
+      .metric-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .metric-body {
+        display: flex;
+        flex-direction: column;
+      }
+      .metric-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+      .metric-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+        margin-top: 2px;
+      }
+
+      .bg-blue-light {
+        background-color: #eff6ff;
+      }
+      .text-blue {
+        color: #3b82f6;
+      }
+      .bg-danger-light {
+        background-color: #fef2f2;
+      }
+      .text-danger {
+        color: #ef4444;
+      }
+      .bg-warning-light {
+        background-color: #fffbeb;
+      }
+      .text-warning {
+        color: #f59e0b;
+      }
+      .bg-success-light {
+        background-color: #f0fdf4;
+      }
+      .text-success {
+        color: #10b981;
+      }
+
+      /* REFINED PANEL ARCHITECTURE */
+      .panel {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        overflow: hidden;
+      }
+      .panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .panel-header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .panel-body {
+        padding: 20px;
+      }
+      .p-0 {
+        padding: 0 !important;
+      }
+
+      .panel-insight {
+        background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+        border: 1px solid #bae6fd;
+      }
+      .insight-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #0284c7;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .insight-text {
+        font-size: 13.5px;
+        color: #0369a1;
+        line-height: 1.6;
+      }
+
+      /* DATA TABLES GRID */
+      .table-clean {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        table-layout: fixed;
+      }
+      .table-clean th {
+        background-color: #f8fafc;
+        padding: 12px 20px;
+        font-weight: 600;
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .table-clean td {
+        padding: 14px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+        word-wrap: break-word;
+      }
+      .table-clean tbody tr:hover {
+        background-color: #f8fafc;
+      }
+
+      .student-name {
+        font-weight: 600;
+        color: #1e293b;
+      }
+      .text-center {
+        text-align: center !important;
+      }
+      .table-empty {
+        padding: 32px;
+        text-align: center;
+        color: #94a3b8;
+      }
+
+      /* TOMBOL HAPUS - MERAH CLEAN */
+      .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background-color: #fef2f2;
+        color: #ef4444;
+        border: 1px solid #fee2e2;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .btn-delete:hover {
+        background-color: #ef4444;
+        color: white;
+        border-color: #ef4444;
+      }
+
+      /* GLOBAL RECOMMENDATION LIST */
+      .global-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .global-list-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 13.5px;
+        color: #334155;
+        line-height: 1.5;
+      }
+      .global-list-item i {
+        color: #3b82f6;
+        font-size: 14px;
+        margin-top: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>MotiMon</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi</a
+          >
+          <a href="/rekomendasi" class="menu-item active"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item">
+            <i class="fa-solid fa-user-gear"></i> Profil Saya
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Rekomendasi Tindak Lanjut</h1>
+            <p class="subtitle">
+              Formulasi saran dan strategi intervensi psikologis otomatis
+              berbasis pemetaan akar masalah siswa SMP
+            </p>
+          </div>
+        </header>
+
+        {% set total = data|length %} {% set rendah = data |
+        selectattr('rekomendasi', 'equalto', 'Panggil tatap muka untuk
+        intervensi khusus dan layanan konseling intensif.') | list | length %}
+        {% set sedang = data | selectattr('rekomendasi', 'equalto', 'Lakukan
+        monitoring dan berikan motivasi tambahan secara personal.') | list |
+        length %} {% set tinggi = data | selectattr('rekomendasi', 'equalto',
+        'Berikan apresiasi, sertakan dalam program pengayaan atau motivasi
+        sebaya.') | list | length %}
+
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon text-blue bg-blue-light">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Total Data Evaluasi</span>
+              <span class="metric-value">{{ total }}</span>
+            </div>
+          </div>
+          <div class="metric-card status-danger">
+            <div class="metric-icon text-danger bg-danger-light">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Sesi Konseling BK</span>
+              <span class="metric-value text-danger">{{ rendah }}</span>
+            </div>
+          </div>
+          <div class="metric-card status-warning">
+            <div class="metric-icon text-warning bg-warning-light">
+              <i class="fa-solid fa-user-clock"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Monitoring Berkala</span>
+              <span class="metric-value text-warning">{{ sedang }}</span>
+            </div>
+          </div>
+          <div class="metric-card status-success">
+            <div class="metric-icon text-success bg-success-light">
+              <i class="fa-solid fa-user-check"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Pemberian Apresiasi</span>
+              <span class="metric-value text-success">{{ tinggi }}</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="panel panel-insight">
+          <div class="panel-body">
+            <div class="insight-badge">
+              <i class="fa-solid fa-brain"></i> Insight Hasil Pemetaan
+            </div>
+            <p class="insight-text">
+              {% if total == 0 %} Belum ada data rekapitulasi terkumpul untuk
+              merumuskan saran intervensi strategis. {% else %} Sistem berhasil
+              memetakan <strong>{{ total }} data siswa</strong> yang memerlukan
+              klasifikasi tindak lanjut strategis bimbingan konseling di
+              sekolah. {% endif %}
+            </p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>
+              <i class="fa-solid fa-users-viewfinder"></i> Distribusi
+              Rekomendasi Kasus per Peserta Didik
+            </h3>
+          </div>
+          <div class="panel-body p-0">
+            <table class="table-clean">
+              <thead>
+                <tr>
+                  <th style="width: 25%">Nama Lengkap Siswa</th>
+                  <th style="width: 25%">Akar Masalah</th>
+                  <th style="width: 35%">Saran Strategi Intervensi BK</th>
+                  <th style="width: 15%; text-align: center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data %}
+                <tr>
+                  <td><span class="student-name">{{ d.nama }}</span></td>
+                  <td><span class="text-muted">{{ d.penyebab }}</span></td>
+                  <td><strong>{{ d.rekomendasi }}</strong></td>
+                  <td class="text-center">
+                    <a
+                      href="/hapus_rekomendasi/{{ d.id }}"
+                      class="btn-delete"
+                      onclick="return confirm('Apakah Anda yakin ingin menghapus data rekomendasi {{ d.nama }}?');"
+                    >
+                      <i class="fa-solid fa-trash-can"></i> Hapus
+                    </a>
+                  </td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td colspan="4" class="table-empty">
+                    Belum ada kompilasi rincian rekomendasi kasus yang tercatat.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>
+              <i class="fa-solid fa-list-check"></i> Rencana Aksi Strategis
+              Komunal
+            </h3>
+          </div>
+          <div class="panel-body">
+            <ul class="global-list">
+              {% for d in data %} {% if d.rekomendasi and d.rekomendasi != '-'
+              %}
+              <li class="global-list-item">
+                <i class="fa-solid fa-circle-chevron-right"></i>
+                <span>
+                  Jadwalkan tindakan: <strong>{{ d.rekomendasi }}</strong> untuk
+                  memfasilitasi kebutuhan perkembangan psikologis siswa bernama
+                  {{ d.nama }}.
+                </span>
+              </li>
+              {% endif %} {% else %}
+              <li style="color: #94a3b8; list-style: none" class="text-center">
+                Belum ada rangkuman daftar rencana aksi komunal yang diterbitkan
+                sistem.
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

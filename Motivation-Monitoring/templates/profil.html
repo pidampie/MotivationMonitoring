@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil Pengguna - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+      .menu-item.active {
+        background-color: #1d4ed8;
+        color: white;
+        font-weight: 600;
+      }
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1100px;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+      .profile-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+      .panel {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+      .panel-body {
+        padding: 24px;
+      }
+      .avatar-card {
+        text-align: center;
+        padding: 32px 16px;
+      }
+      .avatar-circle {
+        width: 110px;
+        height: 110px;
+        background-color: #eff6ff;
+        color: #3b82f6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 42px;
+        margin: 0 auto 16px;
+        border: 3px solid #dbeafe;
+      }
+      .avatar-card h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 4px;
+      }
+      .avatar-card p {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+      .form-group {
+        margin-bottom: 18px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        letter-spacing: 0.5px;
+      }
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .input-wrapper i {
+        position: absolute;
+        left: 14px;
+        color: #94a3b8;
+        font-size: 14px;
+      }
+      .input-control {
+        width: 100%;
+        padding: 11px 14px 11px 40px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-size: 13.5px;
+        color: #334155;
+        transition: all 0.2s;
+      }
+      .input-control:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+      .btn-save-profile {
+        padding: 12px 24px;
+        background-color: #ffc107;
+        color: #0f172a;
+        border: none;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+      }
+      .btn-save-profile:hover {
+        background-color: #e5b006;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Motivation Monitoring</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi</a
+          >
+          <a href="/rekomendasi" class="menu-item"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item active"
+            ><i class="fa-solid fa-user-gear"></i> Profil Saya</a
+          >
+        </nav>
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Profil Pengguna</h1>
+            <p class="subtitle">
+              Kelola informasi data diri dan identitas resmi pendidik atau
+              konselor sekolah
+            </p>
+          </div>
+        </header>
+
+        <div class="profile-grid">
+          <div class="panel">
+            <div class="panel-body avatar-card">
+              <div class="avatar-circle">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+              <h3>{{ user['nama'] }}</h3>
+              <p>{{ user['jabatan'] }}</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-body">
+              <form method="POST" action="/profil">
+                <div class="form-group">
+                  <label>Nama Lengkap & Gelar</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                    <input
+                      type="text"
+                      class="input-control"
+                      name="nama"
+                      value="{{ user['nama'] }}"
+                      required
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Nomor Induk Pegawai (NIP / NUPTK)</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input
+                      type="text"
+                      class="input-control"
+                      name="nomor_induk"
+                      value="{{ user['nomor_induk'] }}"
+                      required
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Jabatan Utama</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <input
+                      type="text"
+                      class="input-control"
+                      name="jabatan"
+                      value="{{ user['jabatan'] }}"
+                      required
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Alamat Email Resmi</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input
+                      type="email"
+                      class="input-control"
+                      name="email"
+                      value="{{ user['email'] }}"
+                      required
+                      autocomplete="off"
+                      style="
+                        width: 100%;
+                        padding: 11px 14px 11px 40px;
+                        border: 1px solid #cbd5e1;
+                        border-radius: 6px;
+                        font-size: 13.5px;
+                      "
+                    />
+                  </div>
+                </div>
+                <div style="margin-top: 24px; text-align: right">
+                  <button type="submit" class="btn-save-profile">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laporan Rekapitulasi - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* RESET & GLOBAL STYLES */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: #f8fafc; /* Abu-abu ultra terang khas Ruangguru */
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR NAVIGATION (Consistent Theme) */
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a; /* Slate dark modern */
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+
+      .menu-item.active {
+        background-color: #1d4ed8;
+        color: white;
+        font-weight: 600;
+      }
+
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* MAIN CONTENT AREA LAYOUT */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1300px;
+      }
+
+      /* TOPBAR / HEADER */
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* COMPACT METRICS GRID DESIGN */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .metric-card {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .metric-card.status-high {
+        border-left: 4px solid #10b981;
+      }
+      .metric-card.status-low {
+        border-left: 4px solid #ef4444;
+      }
+
+      .metric-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .metric-body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .metric-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+        margin-top: 2px;
+      }
+
+      .bg-blue-light {
+        background-color: #eff6ff;
+      }
+      .text-blue {
+        color: #3b82f6;
+      }
+      .bg-purple-light {
+        background-color: #faf5ff;
+      }
+      .text-purple {
+        color: #a855f7;
+      }
+      .bg-success-light {
+        background-color: #f0fdf4;
+      }
+      .text-success {
+        color: #10b981;
+      }
+      .bg-danger-light {
+        background-color: #fef2f2;
+      }
+      .text-danger {
+        color: #ef4444;
+      }
+
+      /* PANEL ARCHITECTURE */
+      .panel {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        overflow: hidden;
+      }
+
+      .panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .panel-header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .panel-body {
+        padding: 20px;
+      }
+
+      .p-0 {
+        padding: 0 !important;
+      }
+
+      /* REFINED PANEL INSIGHT SUMMARY */
+      .panel-insight {
+        background: linear-gradient(135deg, #f0fdf4 0%, #f4fbf7 100%);
+        border: 1px solid #bbf7d0;
+      }
+
+      .insight-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #166534;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .insight-text {
+        font-size: 13.5px;
+        color: #14532d;
+        line-height: 1.6;
+      }
+
+      /* DATA TABLES COMPONENT GRID */
+      .table-clean {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .table-clean th {
+        background-color: #f8fafc;
+        padding: 12px 20px;
+        font-weight: 600;
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .table-clean td {
+        padding: 14px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+      }
+
+      .table-clean tbody tr:hover {
+        background-color: #f8fafc;
+      }
+
+      .student-name {
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .score-pill {
+        background-color: #f1f5f9;
+        color: #334155;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 12px;
+      }
+
+      .text-center {
+        text-align: center !important;
+      }
+
+      /* BADGE PILLS FOR CATEGORIES */
+      .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .badge-success {
+        background-color: #dcfce7;
+        color: #15803d;
+      }
+      .badge-warning {
+        background-color: #fef3c7;
+        color: #b45309;
+      }
+      .badge-danger {
+        background-color: #fef2f2;
+        color: #b91c1c;
+      }
+
+      .table-empty {
+        padding: 40px;
+        text-align: center;
+        color: #94a3b8;
+      }
+
+      .btn-export {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #ffffff;
+        color: #334155;
+        border: 1px solid #cbd5e1;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+
+      .btn-export:hover {
+        background-color: #f1f5f9;
+      }
+
+      /* RESPONSIVE BREAKPOINTS */
+      @media (max-width: 1024px) {
+        .metrics-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Motivation Monitoring</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item active"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi</a
+          >
+          <a href="/rekomendasi" class="menu-item"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item">
+            <i class="fa-solid fa-user-gear"></i> Profil Saya
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Laporan Motivasi Belajar</h1>
+            <p class="subtitle">
+              Rekapitulasi data berkala tingkat motivasi siswa sebagai dasar
+              evaluasi pembelajaran
+            </p>
+          </div>
+        </header>
+
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon text-blue bg-blue-light">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Total Data Rekaman</span>
+              <span class="metric-value">{{ data|length }}</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon text-purple bg-purple-light">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Rata-rata Skor Kelas</span>
+              <span class="metric-value">
+                {% if data %} {{ (data | sum(attribute='rata') / data|length) |
+                round(2) }} {% else %} 0 {% endif %}
+              </span>
+            </div>
+          </div>
+          <div class="metric-card status-high">
+            <div class="metric-icon text-success bg-success-light">
+              <i class="fa-solid fa-circle-up"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Motivasi Tinggi</span>
+              <span class="metric-value text-success">
+                {{ data | selectattr('kategori','equalto','Tinggi') | list |
+                length }}
+              </span>
+            </div>
+          </div>
+          <div class="metric-card status-low">
+            <div class="metric-icon text-danger bg-danger-light">
+              <i class="fa-solid fa-circle-down"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Motivasi Rendah</span>
+              <span class="metric-value text-danger">
+                {{ data | selectattr('kategori','equalto','Rendah') | list |
+                length }}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>
+              <i class="fa-solid fa-table-list"></i> Tabel Klasifikasi Hasil
+              Pemantauan Akhir
+            </h3>
+            <button onclick="window.print()" class="btn-export">
+              <i class="fa-solid fa-print"></i> Cetak Laporan
+            </button>
+          </div>
+          <div class="panel-body p-0">
+            <table class="table-clean">
+              <thead>
+                <tr>
+                  <th>Nama Lengkap Peserta Didik</th>
+                  <th class="text-center">Indeks Skor Rata-rata</th>
+                  <th>Kategori Akhir</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data %}
+                <tr>
+                  <td><span class="student-name">{{ d.nama }}</span></td>
+                  <td class="text-center">
+                    <span class="score-pill">{{ d.rata }}</span>
+                  </td>
+                  <td>
+                    {% if d.kategori == 'Tinggi' %}
+                    <span class="badge badge-success">Tinggi</span>
+                    {% elif d.kategori == 'Sedang' %}
+                    <span class="badge badge-warning">Sedang</span>
+                    {% else %}
+                    <span class="badge badge-danger">Rendah</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td colspan="3" class="table-empty">
+                    Belum ada kompilasi rekaman data laporan dalam sistem.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel panel-insight">
+          <div class="panel-body">
+            <div class="insight-badge">
+              <i class="fa-solid fa-square-poll-horizontal"></i> Kesimpulan
+              Evaluasi
+            </div>
+            <p class="insight-text">
+              {% if data %} Berdasarkan hasil kalkulasi data yang terekam,
+              mayoritas tingkat motivasi belajar siswa di kelas ini didominasi
+              oleh kategori <strong>{{ data[0].kategori }}</strong>. Gunakan
+              data indikator ini sebagai acuan penyusunan strategi pembelajaran
+              adaptif berikutnya. {% else %} Belum ada data rekapitulasi
+              terkumpul untuk merumuskan kesimpulan atau tindak lanjut
+              administratif. {% endif %}
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

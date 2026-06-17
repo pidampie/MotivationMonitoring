@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log Aktivitas Siswa - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* RESET & GLOBAL STYLES */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR NAVIGATION (Consistent Theme) */
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+
+      .menu-item.active {
+        background-color: #1d4ed8;
+        color: white;
+        font-weight: 600;
+      }
+
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* MAIN CONTENT AREA LAYOUT */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1300px;
+      }
+
+      /* TOPBAR / HEADER */
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* COMPACT METRICS GRID */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .metric-card {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .metric-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .metric-body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .metric-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+        margin-top: 2px;
+      }
+
+      .bg-blue-light {
+        background-color: #eff6ff;
+      }
+      .text-blue {
+        color: #3b82f6;
+      }
+      .bg-success-light {
+        background-color: #f0fdf4;
+      }
+      .text-success {
+        color: #10b981;
+      }
+      .bg-danger-light {
+        background-color: #fef2f2;
+      }
+      .text-danger {
+        color: #ef4444;
+      }
+
+      /* TWO COLUMN LAYOUT FOR FORM & PREVIEW */
+      .split-layout {
+        display: grid;
+        grid-template-columns: 6fr 4fr;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      /* PANEL & FORM STYLES */
+      .panel {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        background-color: white;
+      }
+
+      .panel-header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .panel-body {
+        padding: 20px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+
+      .form-group-full {
+        grid-column: span 2;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 6px;
+      }
+
+      /* INPUTS STYLE */
+      select,
+      input[type="number"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #fff;
+        color: #334155;
+        font-size: 13px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      select:focus,
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      .btn-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      button[type="submit"],
+      .btn-action {
+        flex: 1;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      button[type="submit"] {
+        background-color: #ffc107; /* Ruangguru Accent Yellow */
+        color: #0f172a;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #e5b006;
+      }
+
+      .btn-action {
+        background-color: #f1f5f9;
+        color: #334155;
+        border: 1px solid #e2e8f0;
+      }
+
+      .btn-action:hover {
+        background-color: #e2e8f0;
+      }
+
+      /* PREVIEW CONTAINER PLACEHOLDER */
+      .preview-box {
+        background-color: #f8fafc;
+        border: 1px dashed #cbd5e1;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .preview-result {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1d4ed8;
+        margin-top: 10px;
+      }
+
+      /* CLEAN DATA TABLE COMPONENTS */
+      .table-clean {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .table-clean th {
+        background-color: #f8fafc;
+        padding: 12px 20px;
+        font-weight: 600;
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .table-clean td {
+        padding: 12px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+      }
+
+      .table-clean tbody tr:hover {
+        background-color: #f8fafc;
+      }
+
+      /* BADGE PILLS FOR CATEGORIES */
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .badge-success {
+        background-color: #dcfce7;
+        color: #15803d;
+      }
+      .badge-warning {
+        background-color: #fef3c7;
+        color: #b45309;
+      }
+      .badge-danger {
+        background-color: #fef2f2;
+        color: #b91c1c;
+      }
+
+      .text-center {
+        text-align: center !important;
+      }
+      .p-0 {
+        padding: 0 !important;
+      }
+
+      .table-empty {
+        padding: 32px;
+        text-align: center;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Motivation Monitoring</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item active"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi</a
+          >
+          <a href="/rekomendasi" class="menu-item"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item">
+            <i class="fa-solid fa-user-gear"></i> Profil Saya
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Aktivitas Kinerja Siswa</h1>
+            <p class="subtitle">
+              Pencatatan parameter harian keterlibatan belajar siswa secara
+              objektif
+            </p>
+          </div>
+        </header>
+
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon text-blue bg-blue-light">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Total Entri Aktivitas</span>
+              <span class="metric-value">{{ aktivitas|length }}</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon text-success bg-success-light">
+              <i class="fa-solid fa-user-check"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Rerata Kehadiran</span>
+              <span class="metric-value">
+                {% if aktivitas %} {{ (aktivitas | sum(attribute='hadir') /
+                aktivitas|length) | round(2) }}% {% else %} 0% {% endif %}
+              </span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon text-danger bg-danger-light">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="metric-body">
+              <span class="metric-label">Kategori Rendah</span>
+              <span class="metric-value text-danger">
+                {{ aktivitas | selectattr('kategori','equalto','Rendah') | list
+                | length }}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <div class="split-layout">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>
+                <i class="fa-solid fa-pen-to-square"></i> Form Manajemen Log
+                Aktivitas
+              </h3>
+            </div>
+            <div class="panel-body">
+              <form method="POST" action="/simpan_aktivitas">
+                <div class="form-grid">
+                  <div class="form-group-full">
+                    <label class="form-label">Pilih Peserta Didik</label>
+                    <select name="id_siswa" required>
+                      <option value="">-- Pilih Nama Siswa --</option>
+                      {% for s in siswa %}
+                      <option value="{{ s.id }}">{{ s.nama }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="form-label">Kehadiran Kelas (%)</label>
+                    <input
+                      type="number"
+                      name="hadir"
+                      placeholder="Contoh: 95"
+                      min="0"
+                      max="100"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label class="form-label">Keaktifan Belajar (1-100)</label>
+                    <input
+                      type="number"
+                      name="aktif"
+                      placeholder="Contoh: 80"
+                      min="1"
+                      max="100"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label class="form-label">Pengumpulan Tugas (%)</label>
+                    <input
+                      type="number"
+                      name="tugas"
+                      placeholder="Contoh: 90"
+                      min="0"
+                      max="100"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label class="form-label">Partisipasi Diskusi (%)</label>
+                    <input
+                      type="number"
+                      name="diskusi"
+                      placeholder="Contoh: 85"
+                      min="0"
+                      max="100"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="btn-container">
+                  <button type="submit">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan ke Database
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-action"
+                    onclick="previewMotivasi()"
+                  >
+                    <i class="fa-solid fa-magnifying-glass"></i> Cek Estimasi
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h3>
+                <i class="fa-solid fa-chart-line"></i> Hasil Estimasi Cepat
+              </h3>
+            </div>
+            <div class="panel-body" style="height: calc(100% - 53px)">
+              <div class="preview-box">
+                <i
+                  class="fa-solid fa-gauge-high"
+                  style="font-size: 32px; color: #94a3b8; margin-bottom: 12px"
+                ></i>
+                <p style="color: #64748b; font-size: 13px">
+                  Klik tombol <strong>"Cek Estimasi"</strong> untuk memproses
+                  kalkulasi sementara tanpa menyimpan ke database.
+                </p>
+                <h3 class="preview-result" id="preview"></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>
+              <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Komparasi
+              Aktivitas Berkala
+            </h3>
+          </div>
+          <div class="panel-body p-0">
+            <table class="table-clean">
+              <thead>
+                <tr>
+                  <th>Nama Lengkap Siswa</th>
+                  <th class="text-center">Kehadiran</th>
+                  <th class="text-center">Keaktifan</th>
+                  <th class="text-center">Tugas</th>
+                  <th class="text-center">Diskusi</th>
+                  <th class="text-center">Rerata Skor</th>
+                  <th>Kategori Hasil</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for a in aktivitas %}
+                <tr>
+                  <td><strong>{{ a.nama }}</strong></td>
+                  <td class="text-center">{{ a.hadir }}%</td>
+                  <td class="text-center">{{ a.aktif }}</td>
+                  <td class="text-center">{{ a.tugas }}%</td>
+                  <td class="text-center">{{ a.diskusi }}%</td>
+                  <td
+                    class="text-center"
+                    style="font-weight: 700; color: #334155"
+                  >
+                    {{ a.skor }}
+                  </td>
+                  <td>
+                    {% if a.kategori == 'Tinggi' %}
+                    <span class="badge badge-success">Tinggi</span>
+                    {% elif a.kategori == 'Sedang' %}
+                    <span class="badge badge-warning">Sedang</span>
+                    {% else %}
+                    <span class="badge badge-danger">Rendah</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td colspan="7" class="table-empty">
+                    Belum ada riwayat parameter aktivitas yang tercatat.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>

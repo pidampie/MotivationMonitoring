@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Asesmen Motivasi - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* RESET & GLOBAL STYLES */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR NAVIGATION */
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+
+      .menu-item.active {
+        background-color: #1d4ed8;
+        color: white;
+        font-weight: 600;
+      }
+
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* MAIN CONTENT WRAPPER */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1000px;
+      }
+
+      /* TOPBAR / HEADER */
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* ASSESSMENT COMPONENT FORM STYLES */
+      .form-container {
+        width: 100%;
+      }
+
+      .panel-selector {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .selector-group {
+        flex: 1;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #fff;
+        color: #334155;
+        font-size: 13px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      /* CORE INSTRUMENT CARDS */
+      .komponen-block {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+
+      .block-header {
+        padding: 14px 20px;
+        background-color: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Dynamic Border Indicator Colors per Module */
+      .border-keterlibatan {
+        border-left: 4px solid #3b82f6;
+      }
+      .border-disiplin {
+        border-left: 4px solid #10b981;
+      }
+      .border-ketekunan {
+        border-left: 4px solid #a855f7;
+      }
+      .border-minat {
+        border-left: 4px solid #f59e0b;
+      }
+
+      .block-header h2 {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1e293b;
+      }
+
+      .block-body {
+        padding: 4px 20px;
+      }
+
+      .indikator-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #f1f5f9;
+        gap: 24px;
+      }
+
+      .indikator-row:last-child {
+        border-bottom: none;
+      }
+
+      .indikator-text {
+        font-size: 13.5px;
+        color: #334155;
+        font-weight: 500;
+      }
+
+      /* MATRIX SCALE RADIO BUTTON LAYOUT */
+      .skala-container {
+        display: flex;
+        gap: 8px;
+      }
+
+      .skala-option {
+        position: relative;
+      }
+
+      .skala-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .skala-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .skala-option input[type="radio"]:checked + .skala-label {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+        color: white;
+      }
+
+      .skala-option input[type="radio"]:focus + .skala-label {
+        box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+      }
+
+      /* FOOTER METRIC SUMMARY CAPTIONS */
+      .legend-box {
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #1e40af;
+        font-size: 12.5px;
+      }
+
+      /* SUBMIT BUTTON FOOTER ELEMENT */
+      .btn-submit-container {
+        margin-top: 12px;
+      }
+
+      .btn-primary-submit {
+        width: 100%;
+        padding: 12px 24px;
+        background-color: #ffc107; /* Ruangguru Accent Yellow */
+        color: #0f172a;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: background-color 0.2s;
+      }
+
+      .btn-primary-submit:hover {
+        background-color: #e5b006;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Motivation Monitoring</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item active"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi</a
+          >
+          <a href="/rekomendasi" class="menu-item"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item">
+            <i class="fa-solid fa-user-gear"></i> Profil Saya
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Instrumen Motivasi Belajar</h1>
+            <p class="subtitle">
+              Formulir digital pemantauan indikator perkembangan mental
+              psikologis siswa
+            </p>
+          </div>
+        </header>
+
+        <form method="POST" action="/simpan_penilaian" class="form-container">
+          <div class="panel-selector">
+            <div class="selector-group">
+              <label class="form-label">Identitas Peserta Didik Terarah</label>
+              <select name="id_siswa" required>
+                <option value="">-- Pilih Nama Siswa Terdaftar --</option>
+                {% for s in siswa %}
+                <option value="{{ s.id }}">{{ s.nama }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="komponen-block border-keterlibatan">
+            <div class="block-header">
+              <i
+                class="fa-solid fa-user-wave-square"
+                style="color: #3b82f6"
+              ></i>
+              <h2>Keterlibatan Siswa (Emotional Engagement)</h2>
+            </div>
+            <div class="block-body">
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Aktif bertanya saat pembelajaran berlangsung</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="K1_{{i}}"
+                      name="K1"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="K1_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Merespons/menjawab pertanyaan yang diajukan guru</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="K2_{{i}}"
+                      name="K2"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="K2_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Berpartisipasi intensif dalam forum diskusi kelompok</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="K3_{{i}}"
+                      name="K3"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="K3_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Berani menyampaikan pendapat, ide, atau solusi di depan
+                  kelas</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="K4_{{i}}"
+                      name="K4"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="K4_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="komponen-block border-disiplin">
+            <div class="block-header">
+              <i class="fa-solid fa-user-clock" style="color: #10b981"></i>
+              <h2>Disiplin Belajar (Learning Discipline)</h2>
+            </div>
+            <div class="block-body">
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Hadir tepat waktu di ruang kelas</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="D1_{{i}}"
+                      name="D1"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="D1_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Mengumpulkan tugas mandiri/kelompok tepat waktu</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="D2_{{i}}"
+                      name="D2"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="D2_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Mematuhi dan mengikuti tata tertib aturan kelas</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="D3_{{i}}"
+                      name="D3"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="D3_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Membawa perlengkapan dan buku paket belajar sesuai
+                  jadwal</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="D4_{{i}}"
+                      name="D4"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="D4_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="komponen-block border-ketekunan">
+            <div class="block-header">
+              <i class="fa-solid fa-brain" style="color: #a855f7"></i>
+              <h2>Ketekunan (Persistence & Focus)</h2>
+            </div>
+            <div class="block-body">
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Tidak mudah menyerah saat menghadapi soal/materi yang
+                  sulit</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="T1_{{i}}"
+                      name="T1"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="T1_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Mengerjakan tugas yang diinstruksikan sampai tuntas
+                  selesai</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="T2_{{i}}"
+                      name="T2"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="T2_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Fokus dan memperhatikan penjelasan materi selama
+                  pembelajaran</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="T3_{{i}}"
+                      name="T3"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="T3_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Mempelajari kembali atau mengulang materi secara
+                  mandiri</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="T4_{{i}}"
+                      name="T4"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="T4_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="komponen-block border-minat">
+            <div class="block-header">
+              <i class="fa-solid fa-heart" style="color: #f59e0b"></i>
+              <h2>Minat Belajar (Learning Interest)</h2>
+            </div>
+            <div class="block-body">
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Menunjukkan rasa antusias saat mengikuti pelajaran</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="M1_{{i}}"
+                      name="M1"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="M1_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Menunjukkan rasa ingin tahu yang tinggi terhadap materi
+                  baru</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="M2_{{i}}"
+                      name="M2"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="M2_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Merasa senang dan nyaman dalam mengikuti setiap kegiatan
+                  belajar</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="M3_{{i}}"
+                      name="M3"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="M3_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="indikator-row">
+                <span class="indikator-text"
+                  >Inisiatif mencari sumber/referensi belajar tambahan di luar
+                  kelas</span
+                >
+                <div class="skala-container">
+                  {% for i in range(1,5) %}
+                  <div class="skala-option">
+                    <input
+                      type="radio"
+                      id="M4_{{i}}"
+                      name="M4"
+                      value="{{i}}"
+                      required
+                    />
+                    <label for="M4_{{i}}" class="skala-label">{{i}}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="legend-box">
+            <i class="fa-solid fa-circle-info"></i>
+            <span
+              ><strong>Pedoman Skor Asesmen:</strong> 1 = Tidak Pernah | 2 =
+              Jarang | 3 = Sering | 4 = Selalu</span
+            >
+          </div>
+
+          <div class="btn-submit-container">
+            <button type="submit" class="btn-primary-submit">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Hasil Rekam
+              Asesmen
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>

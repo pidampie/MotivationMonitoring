@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asesmen Komprehensif - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* RESET & GLOBAL STYLES */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR NAVIGATION */
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+      .menu-item.active {
+        background-color: #1d4ed8;
+        color: white;
+        font-weight: 600;
+      }
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* MAIN CONTENT WRAPPER */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1200px;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* TWO COLUMN SPLIT FOR INPUT AND LIVE CALCULATOR */
+      .split-layout {
+        display: grid;
+        grid-template-columns: 7fr 3fr;
+        gap: 24px;
+      }
+
+      /* FORM STYLE REFINEMENTS */
+      .panel-selector {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+      }
+      .form-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: #475569;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      select,
+      input[type="number"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #fff;
+        color: #334155;
+        font-size: 13px;
+        transition: all 0.2s;
+      }
+      select:focus,
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      /* ASESMEN COMPONENT BLOCKS */
+      .block-asesmen {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      .block-header {
+        padding: 14px 20px;
+        background-color: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .block-header h2 {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #1e293b;
+      }
+      .block-body {
+        padding: 20px;
+      }
+
+      /* Borders Dynamic Indicators */
+      .border-pedagogi {
+        border-left: 4px solid #3b82f6;
+      }
+      .border-afektif {
+        border-left: 4px solid #10b981;
+      }
+      .border-psikomotor {
+        border-left: 4px solid #a855f7;
+      }
+
+      /* Pedagogi Grid */
+      .input-row-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      /* Afektif & Psikomotor Layout */
+      .indikator-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid #f1f5f9;
+        gap: 24px;
+      }
+      .indikator-item:last-child {
+        border-bottom: none;
+      }
+      .indikator-title {
+        font-size: 13px;
+        color: #334155;
+        font-weight: 500;
+        flex: 1;
+        line-height: 1.4;
+      }
+
+      /* RADIO MATRIX BUTTONS */
+      .matrix-container {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .matrix-option {
+        position: relative;
+      }
+      .matrix-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .matrix-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .matrix-option input[type="radio"]:checked + .matrix-label {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+        color: white;
+      }
+
+      /* LIVE SUMMARY SIDEBAR STYLES */
+      .sticky-calculator {
+        position: sticky;
+        top: 32px;
+      }
+      .calc-card {
+        background-color: #0f172a;
+        color: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .calc-card h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #94a3b8;
+        border-bottom: 1px solid #334155;
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+      }
+      .calc-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        font-size: 13px;
+        color: #cbd5e1;
+      }
+      .calc-row-total {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px dashed #334155;
+        padding-top: 16px;
+        margin-top: 16px;
+      }
+      .total-label {
+        font-size: 12px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+      .total-score {
+        font-size: 36px;
+        font-weight: 700;
+        color: #ffc107;
+        margin: 4px 0;
+        line-height: 1;
+      }
+
+      .badge-status-calc {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+        margin-top: 8px;
+        width: 100%;
+      }
+      .status-calc-empty {
+        background-color: #334155;
+        color: #94a3b8;
+      }
+      .status-calc-tinggi {
+        background-color: #10b981;
+        color: white;
+      }
+      .status-calc-sedang {
+        background-color: #f59e0b;
+        color: white;
+      }
+      .status-calc-rendah {
+        background-color: #ef4444;
+        color: white;
+      }
+
+      .btn-submit-calc {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: background 0.2s;
+      }
+      .btn-submit-calc:hover {
+        background-color: #2563eb;
+      }
+
+      .guide-banner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Motivation Monitoring</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item active"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi</a
+          >
+          <a href="/rekomendasi" class="menu-item"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item">
+            <i class="fa-solid fa-user-gear"></i> Profil Saya
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Asesmen Komprehensif Siswa</h1>
+            <p class="subtitle">
+              Evaluasi multidimensi berdasarkan standardisasi Pedagogi, Afektif,
+              dan Psikomotorik
+            </p>
+          </div>
+        </header>
+
+        <form method="POST" action="/simpan_asesmen_kompleks" id="formAsesmen">
+          <div class="split-layout">
+            <div class="col-inputs">
+              <div class="panel-selector">
+                <label class="form-label">Identitas Peserta Didik</label>
+                <select name="id_siswa" required>
+                  <option value="">-- Pilih Siswa --</option>
+                  {% for s in siswa %}
+                  <option value="{{ s.id }}">{{ s.nama }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="block-asesmen border-pedagogi">
+                <div class="block-header">
+                  <i class="fa-solid fa-book-open text-blue"></i>
+                  <h2>1. Ranah Pedagogi (Nilai Kognitif Mentah 0-100)</h2>
+                </div>
+                <div class="block-body">
+                  <div class="input-row-grid">
+                    <div>
+                      <label class="form-label"
+                        >Rata-rata Tugas / Formatif</label
+                      >
+                      <input
+                        type="number"
+                        id="ped_tugas"
+                        name="ped_tugas"
+                        placeholder="Skor 0-100"
+                        min="0"
+                        max="100"
+                        required
+                        oninput="hitungSkorOtomatis()"
+                      />
+                    </div>
+                    <div>
+                      <label class="form-label">Nilai Ujian / Sumatif</label>
+                      <input
+                        type="number"
+                        id="ped_ujian"
+                        name="ped_ujian"
+                        placeholder="Skor 0-100"
+                        min="0"
+                        max="100"
+                        required
+                        oninput="hitungSkorOtomatis()"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="block-asesmen border-afektif">
+                <div class="block-header">
+                  <i class="fa-solid fa-heart text-success"></i>
+                  <h2>
+                    2. Ranah Afektif (Observasi Sikap & Karakter Kurikulum
+                    Merdeka)
+                  </h2>
+                </div>
+                <div class="block-body">
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >1. Datang ke kelas tepat waktu (Disiplin).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_1_{{i}}"
+                          name="af_1"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_1_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >2. Mematuhi kesepakatan tata tertib kelas (Taat
+                      Aturan).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_2_{{i}}"
+                          name="af_2"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_2_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >3. Mengumpulkan tugas mandiri sesuai tenggat waktu
+                      (Tanggung Jawab).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_3_{{i}}"
+                          name="af_3"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_3_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >4. Mengerjakan ujian secara mandiri tanpa menyontek
+                      (Integritas/Jujur).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_4_{{i}}"
+                          name="af_4"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_4_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >5. Berbagi peran aktif menyelesaikan tugas kelompok
+                      (Gotong Royong).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_5_{{i}}"
+                          name="af_5"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_5_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >6. Menghargai perbedaan pendapat dalam forum diskusi
+                      (Toleransi).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_6_{{i}}"
+                          name="af_6"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_6_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >7. Menggunakan bahasa yang santun saat berkomunikasi
+                      (Sopan Santun).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_7_{{i}}"
+                          name="af_7"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_7_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >8. Tetap fokus belajar meskipun materi pelajaran rumit
+                      (Kegigihan/Mandiri).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_8_{{i}}"
+                          name="af_8"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_8_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >9. Berani mengemukakan pendapat pribadi di depan umum
+                      (Percaya Diri).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_9_{{i}}"
+                          name="af_9"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_9_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >10. Membawa perlengkapan dan buku ajar sesuai jadwal
+                      harian (Kesiapan Belajar).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="af_10_{{i}}"
+                          name="af_10"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="af_10_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="block-asesmen border-psikomotor">
+                <div class="block-header">
+                  <i class="fa-solid fa-gears text-purple"></i>
+                  <h2>
+                    3. Ranah Psikomotorik (Performa Praktik & Proses
+                    Keterampilan Belajar)
+                  </h2>
+                </div>
+                <div class="block-body">
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >1. Merumuskan pertanyaan logis terkait materi ajar secara
+                      lisan (Bertanya).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_1_{{i}}"
+                          name="ps_1"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_1_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >2. Merespons instruksi kerja teknis guru secara cekatan
+                      (Kecepatan Aksi).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_2_{{i}}"
+                          name="ps_2"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_2_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >3. Menyusun bagan, peta konsep, atau media presentasi
+                      kelompok (Sistematisasi).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_3_{{i}}"
+                          name="ps_3"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_3_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >4. Berbicara dengan artikulasi yang jelas dan runtut saat
+                      presentasi (Komunikasi Oral).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_4_{{i}}"
+                          name="ps_4"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_4_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >5. Menggunakan perangkat atau platform pembelajaran
+                      digital pendukung (Literasi Digital).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_5_{{i}}"
+                          name="ps_5"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_5_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >6. Membuat catatan intisari materi pelajaran secara
+                      mandiri (Keterampilan Merangkum).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_6_{{i}}"
+                          name="ps_6"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_6_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >7. Terlibat fisik secara aktif dalam dinamika kerja tim
+                      kelompok (Partisipasi Motorik).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_7_{{i}}"
+                          name="ps_7"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_7_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >8. Meniru atau mereplikasi metode pemecahan masalah
+                      sesuai contoh guru (Imitasi Proses).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_8_{{i}}"
+                          name="ps_8"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_8_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >9. Memodifikasi langkah kerja saat dihadapkan pada
+                      variasi studi kasus (Adaptasi Keterampilan).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_9_{{i}}"
+                          name="ps_9"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_9_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="indikator-item">
+                    <span class="indikator-title"
+                      >10. Menghasilkan produk tugas portofolio atau lembar
+                      kerja dengan struktur rapi (Artikulasi Karya).</span
+                    >
+                    <div class="matrix-container">
+                      {% for i in range(1,5) %}
+                      <div class="matrix-option">
+                        <input
+                          type="radio"
+                          id="ps_10_{{i}}"
+                          name="ps_10"
+                          value="{{i}}"
+                          required
+                          onchange="hitungSkorOtomatis()"
+                        />
+                        <label for="ps_10_{{i}}" class="matrix-label"
+                          >{{i}}</label
+                        >
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="guide-banner">
+                <i class="fa-solid fa-circle-info"></i>
+                <span
+                  >Skala Penilaian Panduan Resmi: 1 = Kurang | 2 = Cukup | 3 =
+                  Baik | 4 = Sangat Baik</span
+                >
+              </div>
+            </div>
+
+            <div class="col-side">
+              <div class="sticky-calculator">
+                <div class="calc-card">
+                  <h3>Kalkulator Skor Otomatis</h3>
+
+                  <div class="calc-row">
+                    <span>Skor Pedagogi (Rerata):</span>
+                    <span id="res_ped">0.00</span>
+                  </div>
+                  <div class="calc-row">
+                    <span>Skor Afektif (Konversi %):</span>
+                    <span id="res_af">0.00%</span>
+                  </div>
+                  <div class="calc-row">
+                    <span>Skor Psikomotor (Konversi %):</span>
+                    <span id="res_ps">0.00%</span>
+                  </div>
+
+                  <div class="calc-row-total">
+                    <span class="total-label">Estimasi Skor Gabungan</span>
+                    <span class="total-score" id="totalScore">0.0</span>
+                    <span class="total-label">Klasifikasi Akhir</span>
+                    <div
+                      id="statusBadge"
+                      class="badge-status-calc status-calc-empty"
+                    >
+                      Menunggu Data Input
+                    </div>
+                  </div>
+
+                  <input
+                    type="hidden"
+                    id="final_score_input"
+                    name="skor_akhir"
+                    value="0"
+                  />
+                  <input
+                    type="hidden"
+                    id="final_kategori_input"
+                    name="kategori_akhir"
+                    value=""
+                  />
+
+                  <button type="submit" class="btn-submit-calc">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Hasil
+                    Asesmen
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <script>
+      function hitungSkorOtomatis() {
+        // 1. Hitung Nilai Pedagogi
+        const tugas =
+          parseFloat(document.getElementById("ped_tugas").value) || 0;
+        const ujian =
+          parseFloat(document.getElementById("ped_ujian").value) || 0;
+        const rerataPedagogi = (tugas + ujian) / 2;
+        document.getElementById("res_ped").innerText =
+          rerataPedagogi.toFixed(2);
+
+        // 2. Ambil Nilai Afektif (Maksimal Skor Ideal = 10 pertanyaan x 4 = 40)
+        let totalAfektifMentah = 0;
+        let afCount = 0;
+        for (let i = 1; i <= 10; i++) {
+          const val =
+            parseFloat(
+              document.querySelector(`input[name="af_${i}"]:checked`)?.value,
+            ) || 0;
+          if (val > 0) {
+            totalAfektifMentah += val;
+            afCount++;
+          }
+        }
+        const persenAfektif =
+          afCount === 10 ? (totalAfektifMentah / 40) * 100 : 0;
+        document.getElementById("res_af").innerText =
+          persenAfektif.toFixed(2) + "%";
+
+        // 3. Ambil Nilai Psikomotor (Maksimal Skor Ideal = 10 pertanyaan x 4 = 40)
+        let totalPsikomotorMentah = 0;
+        let psCount = 0;
+        for (let i = 1; i <= 10; i++) {
+          const val =
+            parseFloat(
+              document.querySelector(`input[name="ps_${i}"]:checked`)?.value,
+            ) || 0;
+          if (val > 0) {
+            totalPsikomotorMentah += val;
+            psCount++;
+          }
+        }
+        const persenPsikomotor =
+          psCount === 10 ? (totalPsikomotorMentah / 40) * 100 : 0;
+        document.getElementById("res_ps").innerText =
+          persenPsikomotor.toFixed(2) + "%";
+
+        // 4. Hitung Skor Akhir Gabungan (Rata-rata 3 Ranah Pembelajaran)
+        let skorAkhir = 0;
+        if (rerataPedagogi > 0 && afCount === 10 && psCount === 10) {
+          skorAkhir = (rerataPedagogi + persenAfektif + persenPsikomotor) / 3;
+        }
+
+        document.getElementById("totalScore").innerText = skorAkhir.toFixed(1);
+        document.getElementById("final_score_input").value =
+          skorAkhir.toFixed(2);
+
+        // 5. Penentuan Klasifikasi Kategori Motivasi
+        const badge = document.getElementById("statusBadge");
+        const kategoriInput = document.getElementById("final_kategori_input");
+
+        if (skorAkhir === 0) {
+          badge.innerText = "Menunggu Data Input";
+          badge.className = "badge-status-calc status-calc-empty";
+          kategoriInput.value = "";
+        } else if (skorAkhir >= 75) {
+          badge.innerText = "MOTIVASI TINGGI";
+          badge.className = "badge-status-calc status-calc-tinggi";
+          kategoriInput.value = "Tinggi";
+        } else if (skorAkhir >= 50) {
+          badge.innerText = "MOTIVASI SEDANG";
+          badge.className = "badge-status-calc status-calc-sedang";
+          kategoriInput.value = "Sedang";
+        } else {
+          badge.innerText = "MOTIVASI RENDAH";
+          badge.className = "badge-status-calc status-calc-rendah";
+          kategoriInput.value = "Rendah";
+        }
+      }
+    </script>
+  </body>
+</html>

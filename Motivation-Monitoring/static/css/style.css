@@ -1,0 +1,345 @@
+/* ================== ROOT (WARNA UTAMA) ================== */
+:root {
+  --primary: #2f80ed;
+  --primary-light: #56ccf2;
+  --bg: #f4f7fb;
+  --white: #ffffff;
+  --text: #2d3436;
+  --gray: #b2bec3;
+  --success: #27ae60;
+  --warning: #f2c94c;
+  --danger: #eb5757;
+}
+
+/* ================== GLOBAL ================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ================== LOGIN PAGE ================== */
+.login-body {
+  background: linear-gradient(135deg, #2f80ed, #56ccf2);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 20px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.8s ease;
+}
+
+.login-card h2 {
+  margin-bottom: 5px;
+}
+
+.login-card p {
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+
+.login-card input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  background: #1c6ed5;
+}
+
+/* ================== LAYOUT ================== */
+.layout {
+  display: flex;
+}
+
+/* ================== SIDEBAR ================== */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: linear-gradient(180deg, #2f80ed, #1c60c0);
+  color: white;
+  padding: 20px;
+  position: fixed;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 8px 0;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ================== MAIN ================== */
+.main {
+  margin-left: 240px;
+  padding: 25px;
+  width: 100%;
+}
+
+/* ================== HEADER ================== */
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+}
+
+/* ================== CARD ================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--white);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  font-size: 16px;
+  color: var(--gray);
+}
+
+.card p {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* ================== FORM ================== */
+.form-container {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.form-container input,
+.form-container select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.form-container button {
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ================== TABLE ================== */
+.table-container {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: var(--primary);
+  color: white;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+  background: #f9f9f9;
+}
+
+/* ================== STATUS ================== */
+.status-tinggi {
+  color: var(--success);
+  font-weight: bold;
+}
+
+.status-sedang {
+  color: var(--warning);
+  font-weight: bold;
+}
+
+.status-rendah {
+  color: var(--danger);
+  font-weight: bold;
+}
+
+/* ================== NOTIF ================== */
+.notif {
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.notif.rendah {
+  background: var(--danger);
+}
+
+.notif.sedang {
+  background: var(--warning);
+}
+
+.notif.tinggi {
+  background: var(--success);
+}
+
+/* ================== ANIMATION ================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.btn-delete {
+  background: var(--danger);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  opacity: 0.8;
+} /* ===== FORM SISWA ===== */
+.form-box {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  align-items: center;
+}
+
+.form-box input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+
+.form-box input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* BUTTON TAMBAH */
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #1c6ed5;
+}
+
+/* TABLE IMPROVEMENT */
+.table-container {
+  margin-top: 10px;
+}
+
+table {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+td {
+  vertical-align: middle;
+}
+
+/* DELETE BUTTON */
+.btn-delete {
+  background: var(--danger);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+}

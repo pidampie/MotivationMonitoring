@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Siswa - Motivation Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* RESET & GLOBAL STYLES */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR NAVIGATION */
+      .sidebar {
+        width: 260px;
+        background-color: #0f172a;
+        color: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+      }
+
+      .sidebar-brand {
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid #1e293b;
+      }
+
+      .brand-icon {
+        background-color: #3b82f6;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: white;
+      }
+
+      .brand-text h2 {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .brand-text span {
+        font-size: 11px;
+        color: #94a3b8;
+        display: block;
+      }
+
+      .sidebar-menu {
+        padding: 20px 16px;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .menu-category {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 16px 0 8px 8px;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        color: #94a3b8;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .menu-item i {
+        font-size: 16px;
+        width: 20px;
+      }
+
+      .menu-item:hover {
+        background-color: #1e293b;
+        color: #f1f5f9;
+      }
+
+      .menu-item.active {
+        background-color: #1d4ed8;
+        color: white;
+        font-weight: 600;
+      }
+
+      .sidebar-footer {
+        padding: 16px;
+        border-top: 1px solid #1e293b;
+      }
+
+      .btn-logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .btn-logout:hover {
+        background-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* MAIN CONTENT AREA LAYOUT */
+      .main-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 32px;
+        max-width: 1200px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .topbar h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* PANEL ARCHITECTURE */
+      .panel {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        overflow: hidden;
+      }
+
+      .panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .panel-header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .panel-body {
+        padding: 20px;
+      }
+
+      .p-0 {
+        padding: 0 !important;
+      }
+
+      /* FORM ROW GRID STYLES */
+      .form-inline-grid {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .input-flex-main {
+        flex: 2;
+      }
+
+      .input-flex-side {
+        flex: 1;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        background-color: #fff;
+        color: #334155;
+        font-size: 13px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      /* BUTTON ACTION FLAT YELLOW */
+      .btn-primary-add {
+        padding: 10px 20px;
+        background-color: #ffc107;
+        color: #0f172a;
+        border: none;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+
+      .btn-primary-add:hover {
+        background-color: #e5b006;
+      }
+
+      /* DATA TABLES COMPONENT GRID */
+      .table-clean {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .table-clean th {
+        background-color: #f8fafc;
+        padding: 12px 20px;
+        font-weight: 600;
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .table-clean td {
+        padding: 14px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+      }
+
+      .table-clean tbody tr:hover {
+        background-color: #f8fafc;
+      }
+
+      .student-name {
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .class-badge {
+        background-color: #f1f5f9;
+        color: #475569;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .text-center {
+        text-align: center !important;
+      }
+      .table-empty {
+        padding: 40px;
+        text-align: center;
+        color: #94a3b8;
+      }
+
+      /* TOMBOL HAPUS SISWA */
+      .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background-color: #fef2f2;
+        color: #ef4444;
+        border: 1px solid #fee2e2;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .btn-delete:hover {
+        background-color: #ef4444;
+        color: white;
+        border-color: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Motivation Monitoring</h2>
+            <span>Monitoring Sistem</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu">
+          <p class="menu-category">Menu Utama</p>
+          <a href="/dashboard" class="menu-item"
+            ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+          >
+          <a href="/siswa" class="menu-item active"
+            ><i class="fa-solid fa-user-group"></i> Data Siswa</a
+          >
+          <a href="/aktivitas" class="menu-item"
+            ><i class="fa-solid fa-calendar-check"></i> Log Aktivitas</a
+          >
+          <a href="/asesmen_kompleks" class="menu-item"
+            ><i class="fa-solid fa-bolt"></i> Input Asesmen</a
+          >
+
+          <p class="menu-category">Analisis & Output</p>
+          <a href="/laporan" class="menu-item"
+            ><i class="fa-solid fa-file-invoice"></i> Laporan Grafis</a
+          >
+          <a href="/notifikasi" class="menu-item"
+            ><i class="fa-solid fa-bell"></i> Notifikasi</a
+          >
+          <a href="/rekomendasi" class="menu-item"
+            ><i class="fa-solid fa-lightbulb"></i> Rekomendasi</a
+          >
+          <p class="menu-category">Pengaturan</p>
+          <a href="/profil" class="menu-item">
+            <i class="fa-solid fa-user-gear"></i> Profil Saya
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="/" class="btn-logout"
+            ><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</a
+          >
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Registrasi Data Siswa</h1>
+            <p class="subtitle">
+              Manajemen master data identitas dan rombongan belajar peserta
+              didik jenjang SMP
+            </p>
+          </div>
+        </header>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>
+              <i class="fa-solid fa-user-plus"></i> Tambah Data Peserta Didik
+              Baru
+            </h3>
+          </div>
+          <div class="panel-body">
+            <form method="POST" action="/tambah_siswa">
+              <div class="form-inline-grid">
+                <div class="input-flex-main">
+                  <input
+                    type="text"
+                    name="nama"
+                    placeholder="Ketik nama lengkap siswa..."
+                    required
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="input-flex-side">
+                  <input
+                    type="text"
+                    name="kelas"
+                    placeholder="Contoh: VII-A"
+                    required
+                    autocomplete="off"
+                  />
+                </div>
+                <button type="submit" class="btn-primary-add">
+                  <i class="fa-solid fa-plus"></i> Tambahkan Siswa
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>
+              <i class="fa-solid fa-address-book"></i> Daftar Nama Siswa
+              Terdaftar dalam Basis Data
+            </h3>
+          </div>
+          <div class="panel-body p-0">
+            <table class="table-clean">
+              <thead>
+                <tr>
+                  <th style="width: 50%">Nama Lengkap Siswa</th>
+                  <th style="width: 30%">Rombongan Belajar / Kelas</th>
+                  <th style="width: 20%; text-align: center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for s in siswa %}
+                <tr>
+                  <td><span class="student-name">{{ s.nama }}</span></td>
+                  <td><span class="class-badge">{{ s.kelas }}</span></td>
+                  <td class="text-center">
+                    <a
+                      href="/hapus_siswa/{{ s.id }}"
+                      class="btn-delete"
+                      onclick="return confirm('Apakah Anda yakin ingin menghapus data siswa {{ s.nama }}? Menghapus siswa juga dapat mempengaruhi data aktivitas terkait.');"
+                    >
+                      <i class="fa-solid fa-trash-can"></i> Hapus
+                    </a>
+                  </td>
+                </tr>
+                {% else %}
+                <tr>
+                  <td colspan="3" class="table-empty">
+                    <i
+                      class="fa-regular fa-folder-open"
+                      style="
+                        font-size: 28px;
+                        color: #cbd5e1;
+                        display: block;
+                        margin-bottom: 8px;
+                      "
+                    ></i>
+                    Belum ada profil siswa yang terdaftar dalam basis data lokal
+                    sekolah.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+  </body>
+</html>
